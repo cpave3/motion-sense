@@ -1,0 +1,10 @@
+{
+  "name": "motion-sense",
+  "version": "0.0.1",
+  "description": "Cross-platform mobile sensor normalisation",
+  "main": "index.js",
+  "repository": "https://github.com/cpave3/motion-sense",
+  "author": "Cameron Pavey <cpave3@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
