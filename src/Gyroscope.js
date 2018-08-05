@@ -2,7 +2,9 @@ const defaultOptions = {
     frequency: 60
 };
 
-class Gyro extends EventTarget {
+const CoreSensor = require('./CoreSensor.js');
+
+class Gyroscope extends CoreSensor {
     constructor(options = {}) {
         super();
         this.config = {};
@@ -41,3 +43,5 @@ class Gyro extends EventTarget {
        }
     };
 }
+
+module.exports = Gyroscope;
