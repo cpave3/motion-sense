@@ -11,11 +11,10 @@ class Gyroscope extends CoreSensor {
         Object.keys(defaultOptions).forEach(option => {
             this.config[option] = options[option] || defaultOptions[option];
         });
-        this.running = false;
-        this.readyToPoll = true;
+        this.readyToEmit = true;
     }
 
-    _motionReady() {
+    isReady() {
         return !!window.deviceMotionEvent;
     };
 
@@ -23,24 +22,37 @@ class Gyroscope extends CoreSensor {
      * Start emitting data from the sensor
      */
     start() {
-       if(!this._motionReady()) {
+       if(this.isReady()) {
+           const { frequency } = this.config;
            // We should be able to get sensor data from the device
-           const interval = Math.round(1000 / (30), 0);
+           const interval = Math.round(1000 / frequency, 0);
            this.intervalTicker = setInterval(() => {
-               this.readyToPoll = true;
+               this.readyToEmit = true;
            }, interval);
 
            window.addEventListener('devicemotion', (event) => {
-               if (this.readyToPoll) {
-                   this.dispatchEvent(new CustomEvent('sensorData', {detail: {data: event.rotationRate}}));
-                   this.readyToPoll = false;
+               /**
+                * Each time we get data from the sensor, we need to check if it
+                * is time to emit a new event yet. This is based on the user-defined
+                * frequency passed to the constructor
+                */
+               if (this.readyToEmit) {
+                   this.dispatchEvent(new CustomEvent('read', {detail: {data: event.rotationRate}}));
+                   this.readyToEmit = false;
                }
            });            
+           this.dispatchEvent(new Event('started'));
        } else {
             // We cannot access the device motion event, so this won't work
             this.dispatchEvent(new CustomEvent('error', { message: 'Could not find window.deviceMotionEvent' }));
             console.error('Could not find window.deviceMotionEvent');
        }
+    };
+
+    stop = () => {
+        window.removeEventListener('devicemotion');
+        this.dispatchEvent(new Event('stopped'));
+        clearInterval(this.intervalTicker);
     };
 }
 
