@@ -15,7 +15,7 @@ class Gyroscope extends CoreSensor {
     }
 
     isReady() {
-        return !!window.deviceMotionEvent;
+        return !!window.DeviceMotionEvent;
     };
 
     /**
@@ -49,7 +49,7 @@ class Gyroscope extends CoreSensor {
        }
     };
 
-    stop = () => {
+    stop() {
         window.removeEventListener('devicemotion');
         this.dispatchEvent(new Event('stopped'));
         clearInterval(this.intervalTicker);

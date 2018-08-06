@@ -5,20 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="../build/app.bundle.js"></script>
+    <script src="./js/app.bundle.js"></script>
 </head>
 <body>
     <h1>Gyro Test</h1>
     <ul>
         <li>Alpha: <span id="alpha">n/a</span></li>
+        <li>Beta: <span id="beta">n/a</span></li>
+        <li>Gamma: <span id="gamma">n/a</span></li>
     </ul>
 
     <script>
-        var g = new window.Motion.Gyroscope();
-        g.addEventListener('sensorData', function(event) {
-            console.log(event);
+        var g = new window.Motion.Gyroscope({ frequency: 5 });
+        g.addEventListener('read', function(event) {
+            var { alpha, beta, gamma } = event.detail.data;
+            document.getElementById('alpha').innerHTML = alpha;
+            document.getElementById('beta').innerHTML = beta;
+            document.getElementById('gamma').innerHTML = gamma;
         }, true);
         g.start();
+        g.config.frequency = 1;
     </script>
 </body>
 </html>
