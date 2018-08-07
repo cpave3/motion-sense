@@ -9,52 +9,59 @@
     <script src="./js/app.bundle.js"></script>
   </head>
   <body>
-  <section class="section">
-    <div class="container has-text-centered">
-        <h1 class="title">Gyroscope</h1>
-        <h2 class="subtitle">Motion.Gyroscope()</h2>
-        <p>
-            This demo shows the basic usage of the motion-sense Gyroscope class
-        </p>
-        <br>
-        <h3 class="is-size-3">Raw Data:</h3>
-        <ul class="is-size-4">
-            <li>Alpha: <span id="alpha">n/a</span></li>
-            <li>Beta: <span id="beta">n/a</span></li>
-            <li>Gamma: <span id="gamma">n/a</span></li>
-        </ul>
-    </div>
-    <br>
-    <label for="rangeFrequency">Sensor Frequency: <span id="currentFrequency">5</span>hz</label>
-    <input name="rangeFrequency" id="rangeFrequency" class="input" type="range" 
-           min="1" max="60" value="5" step="1">
-    
-  </section>
-  <script>
-    var slider = document.getElementById('rangeFrequency');
-    var currentFrequency = document.getElementById('currentFrequency');
-    var precision = 8;
+    <section class="section">
+        <div class="container has-text-centered">
+            <h1 class="title">Gyroscope</h1>
+            <h2 class="subtitle" style="margin-top: 5px;"><code>Motion.Gyroscope()</code></h2>
+            <p>
+                This example demonstrates some of the basic functionality of the Gyroscope class
+            </p>
+            <br>
+            <h3 class="is-size-3">Raw Data:</h3>
+            <ul class="is-size-4">
+                <li>Alpha: <span id="alpha">NaN</span></li>
+                <li>Beta: <span id="beta">NaN</span></li>
+                <li>Gamma: <span id="gamma">NaN</span></li>
+            </ul>
+            <div class="">
+                <br>
+                <label for="rangeFrequency">Sensor Frequency: <span id="currentFrequency">NaN</span>hz</label>
+                <input name="rangeFrequency" id="rangeFrequency" class="input" type="range" 
+                    min="1" max="60" value="5" step="1">
+                <div class="has-text-centered" style="padding-top: 25px;">
+                    <button type="button" class="button is-large is-primary" id="btnStart">Start</button>
+                    <button type="button" class="button is-large is-danger" id="btnStop">Stop</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        var slider = document.getElementById('rangeFrequency');
+        var currentFrequency = document.getElementById('currentFrequency');
+        var precision = 8;
 
-    currentFrequency.innerHTML = slider.value
-    var g = new Motion.Gyroscope({ frequency: slider.value });
+        currentFrequency.innerHTML = slider.value
+        var g = new Motion.Gyroscope({ frequency: slider.value });
 
-    function round(value, precision) {
-        return parseFloat(value).toFixed(precision);
-    }
+        function round(value, precision) {
+            return parseFloat(value).toFixed(precision);
+        }
 
-    g.addEventListener('read', function(event) {
-        var { alpha, beta, gamma } = event.detail.data;
-        document.getElementById('alpha').innerHTML = round(alpha, precision);
-        document.getElementById('beta').innerHTML = round(beta, precision);
-        document.getElementById('gamma').innerHTML = round(gamma, precision);
-    }, true);
-    g.start();
+        g.addEventListener('reading', function(event) {
+            var { alpha, beta, gamma } = event.detail.data;
+            document.getElementById('alpha').innerHTML = round(alpha, precision);
+            document.getElementById('beta').innerHTML = round(beta, precision);
+            document.getElementById('gamma').innerHTML = round(gamma, precision);
+        }, true);
+
+        document.getElementById('btnStart').addEventListener('click', function() { g.start(); });
+        document.getElementById('btnStop').addEventListener('click', function() { g.stop(); });
 
         slider.addEventListener('change', function(e) {
-        var frequency = e.currentTarget.value;
-        currentFrequency.innerHTML = frequency;
-        g.setFrequency(frequency);
-    });
-</script>
+            var frequency = e.currentTarget.value;
+            currentFrequency.innerHTML = frequency;
+            g.setFrequency(frequency);
+        });
+    </script>
   </body>
 </html>
