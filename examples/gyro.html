@@ -1,30 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gyroscope</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
     <script src="./js/app.bundle.js"></script>
-</head>
-<body>
-    <h1>Gyro Test</h1>
-    <ul>
-        <li>Alpha: <span id="alpha">n/a</span></li>
-        <li>Beta: <span id="beta">n/a</span></li>
-        <li>Gamma: <span id="gamma">n/a</span></li>
-    </ul>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container has-text-centered">
+        <h1 class="title">Gyroscope</h1>
+        <h2 class="subtitle">Motion.Gyroscope()</h2>
+        <p>
+            This demo shows the basic usage of the motion-sense Gyroscope class
+        </p>
+        <br>
+        <h3 class="is-size-3">Raw Data:</h3>
+        <ul class="is-size-4">
+            <li>Alpha: <span id="alpha">n/a</span></li>
+            <li>Beta: <span id="beta">n/a</span></li>
+            <li>Gamma: <span id="gamma">n/a</span></li>
+        </ul>
+    </div>
+    <br>
+    <label for="rangeFrequency">Sensor Frequency: <span id="currentFrequency">5</span>hz</label>
+    <input name="rangeFrequency" id="rangeFrequency" class="input" type="range" 
+           min="1" max="60" value="5" step="1">
+    
+  </section>
+  <script>
+    var slider = document.getElementById('rangeFrequency');
+    var currentFrequency = document.getElementById('currentFrequency');
+    var precision = 8;
 
-    <script>
-        var g = new window.Motion.Gyroscope({ frequency: 5 });
-        g.addEventListener('read', function(event) {
-            var { alpha, beta, gamma } = event.detail.data;
-            document.getElementById('alpha').innerHTML = alpha;
-            document.getElementById('beta').innerHTML = beta;
-            document.getElementById('gamma').innerHTML = gamma;
-        }, true);
-        g.start();
-        g.config.frequency = 1;
-    </script>
-</body>
+    currentFrequency.innerHTML = slider.value
+    var g = new Motion.Gyroscope({ frequency: slider.value });
+
+    function round(value, precision) {
+        return parseFloat(value).toFixed(precision);
+    }
+
+    g.addEventListener('read', function(event) {
+        var { alpha, beta, gamma } = event.detail.data;
+        document.getElementById('alpha').innerHTML = round(alpha, precision);
+        document.getElementById('beta').innerHTML = round(beta, precision);
+        document.getElementById('gamma').innerHTML = round(gamma, precision);
+    }, true);
+    g.start();
+
+        slider.addEventListener('change', function(e) {
+        var frequency = e.currentTarget.value;
+        currentFrequency.innerHTML = frequency;
+        g.setFrequency(frequency);
+    });
+</script>
+  </body>
 </html>

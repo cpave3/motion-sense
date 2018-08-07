@@ -23,13 +23,7 @@ class Gyroscope extends CoreSensor {
      */
     start() {
        if(this.isReady()) {
-           const { frequency } = this.config;
-           // We should be able to get sensor data from the device
-           const interval = Math.round(1000 / frequency, 0);
-           this.intervalTicker = setInterval(() => {
-               this.readyToEmit = true;
-           }, interval);
-
+           this.initClock();
            window.addEventListener('devicemotion', (event) => {
                /**
                 * Each time we get data from the sensor, we need to check if it
@@ -54,6 +48,24 @@ class Gyroscope extends CoreSensor {
         this.dispatchEvent(new Event('stopped'));
         clearInterval(this.intervalTicker);
     };
+
+    setFrequency(newFrequency) {
+        this.config.frequency = newFrequency;
+        this.initClock();
+    }
+
+    initClock() {
+        const { frequency } = this.config;
+        if (this.intervalTicker) {
+            clearInterval(this.intervalTicker);
+        }
+        this.readyToEmit = false;
+        // We should be able to get sensor data from the device
+        const interval = Math.round(1000 / frequency, 0);
+        this.intervalTicker = setInterval(() => {
+            this.readyToEmit = true;
+        }, interval);
+    }
 }
 
 module.exports = Gyroscope;
