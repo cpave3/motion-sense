@@ -14,7 +14,6 @@ class Gyroscope extends CoreSensor {
         this.readyToEmit = true;
         this.running = false;
         this.internals();
-
     }
 
     /**
@@ -50,7 +49,7 @@ class Gyroscope extends CoreSensor {
          * frequency passed to the constructor
          */
         if (this.readyToEmit) {
-            this.dispatchEvent(new CustomEvent('reading', {detail: {data: event.rotationRate}}));
+            this.dispatchEvent(new CustomEvent('reading', {detail: {rotationRate: event.rotationRate}}));
             this.readyToEmit = false;
         }
     };   
@@ -89,6 +88,18 @@ class Gyroscope extends CoreSensor {
             this.initClock();
         }
     }
+
+    // devicePresent(callback) {
+    //     const handler = (event) => {
+    //         var hasGyro = typeof event.alpha === 'number'
+    //                     && typeof event.beta  === 'number'
+    //                     && typeof event.gamma === 'number';
+    //         window.removeEventListener('devicemotion', handler, false);
+    //         console.log('gyro', hasGyro);
+    //         callback(hasGyro);
+    //     }
+    //     window.addEventListener('devicemotion', handler, false);
+    // }
 
     /**
      * This method is used to start the internal timer upon which the sensor readings depend

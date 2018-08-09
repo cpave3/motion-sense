@@ -9,7 +9,14 @@
     <script src="./js/app.bundle.js"></script>
   </head>
   <body>
+      <!-- PLEASE NOTE: This page isn't meant to be well-made or pretty, It is just meant to show the library in action -->
     <section class="section">
+            <div class="notification is-warning" id="alertWarning">
+                <button class="delete" onclick="handleAlertClick()"></button>
+                <strong>Please Note:</strong> It appears that you are viewing this demo 
+                on a device which does not support motion detection. Most features will not work.
+                Please visit again on a mobile device.
+            </div>
         <div class="container has-text-centered">
             <h1 class="title">Gyroscope</h1>
             <h2 class="subtitle" style="margin-top: 5px;"><code>Motion.Gyroscope()</code></h2>
@@ -36,6 +43,10 @@
         </div>
     </section>
     <script>
+
+        function handleAlertClick() {
+            document.getElementById('alertWarning').style.display = 'none';
+        }
         var slider = document.getElementById('rangeFrequency');
         var currentFrequency = document.getElementById('currentFrequency');
         var precision = 8;
@@ -43,12 +54,17 @@
         currentFrequency.innerHTML = slider.value
         var g = new Motion.Gyroscope({ frequency: slider.value });
 
+        window.addEventListener("devicemotion", function(event){
+            if(event.rotationRate.alpha || event.rotationRate.beta || event.rotationRate.gamma)
+                handleAlertClick();
+        });
+
         function round(value, precision) {
             return parseFloat(value).toFixed(precision);
         }
 
         g.addEventListener('reading', function(event) {
-            var { alpha, beta, gamma } = event.detail.data;
+            var { alpha, beta, gamma } = event.detail.rotationRate;
             document.getElementById('alpha').innerHTML = round(alpha, precision);
             document.getElementById('beta').innerHTML = round(beta, precision);
             document.getElementById('gamma').innerHTML = round(gamma, precision);

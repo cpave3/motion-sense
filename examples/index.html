@@ -5,13 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>motion-sense demos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 </head>
 <body>
-    <h1>Demo</h1>
-    <ul>
-        <li>
-            <a href="gyro.html">Gyroscope</a>
-        </li>
-    </ul>
+    <!-- PLEASE NOTE: This page isn't meant to be well-made or pretty, It is just meant to show the library in action -->
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Examples in Motion</h1>
+            <div class="tile is-ancestor">
+                <div class="tile">
+                    <div class="tile is-parent" onclick="document.location.href = 'gyro.html';" style="cursor: pointer;">
+                        <article class="tile is-child notification is-primary has-text-centered">
+                            <h2 class="is-size-3">Gyroscope</h2>
+                            <span class="icon is-large">
+                                <i class="fas fa-3x fa-sync-alt"></i>
+                            </span>
+                            <p>
+                                The Gyroscope class gives your access to rotation rate data.
+                            </p>
+                            <br>
+                            <p>
+                                This data represents the current rotation forces being applied to the device
+                                at the time of sampling
+                            </p>
+                        </article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child notification is-warning">WIP</article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child notification is-warning">WIP</article>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </section>
 </body>
 </html>
