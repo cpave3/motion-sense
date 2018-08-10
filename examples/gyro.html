@@ -54,6 +54,7 @@
         currentFrequency.innerHTML = slider.value
         var g = new Motion.Gyroscope({ frequency: slider.value });
 
+        // Hide warning on supoprted devices
         window.addEventListener("devicemotion", function(event){
             if(event.rotationRate.alpha || event.rotationRate.beta || event.rotationRate.gamma)
                 handleAlertClick();

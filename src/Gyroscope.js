@@ -89,18 +89,6 @@ class Gyroscope extends CoreSensor {
         }
     }
 
-    // devicePresent(callback) {
-    //     const handler = (event) => {
-    //         var hasGyro = typeof event.alpha === 'number'
-    //                     && typeof event.beta  === 'number'
-    //                     && typeof event.gamma === 'number';
-    //         window.removeEventListener('devicemotion', handler, false);
-    //         console.log('gyro', hasGyro);
-    //         callback(hasGyro);
-    //     }
-    //     window.addEventListener('devicemotion', handler, false);
-    // }
-
     /**
      * This method is used to start the internal timer upon which the sensor readings depend
      */
