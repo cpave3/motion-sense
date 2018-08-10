@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gyroscope</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+    <script src="./js/app.bundle.js"></script>
+  </head>
+  <body>
+      <!-- PLEASE NOTE: This page isn't meant to be well-made or pretty, It is just meant to show the library in action -->
+    <section class="section">
+            <div class="notification is-warning" id="alertWarning">
+                <button class="delete" onclick="handleAlertClick()"></button>
+                <strong>Please Note:</strong> It appears that you are viewing this demo 
+                on a device which does not support motion detection. Most features will not work.
+                Please visit again on a mobile device.
+            </div>
+        <div class="container has-text-centered">
+            <h1 class="title">Gyroscope</h1>
+            <h2 class="subtitle" style="margin-top: 5px;"><code>Motion.Accelerometer()</code></h2>
+            <p>
+                This example demonstrates some of the basic functionality of the Accelerometer class
+            </p>
+            <br>
+            <h3 class="is-size-3">Raw Data:</h3>
+            <ul class="is-size-4">
+                <li>X: <span id="x">NaN</span></li>
+                <li>Y: <span id="y">NaN</span></li>
+                <li>Z: <span id="z">NaN</span></li>
+            </ul>
+            <div>
+                <br>
+                <label for="rangeFrequency">Sensor Frequency: <span id="currentFrequency">NaN</span>hz</label>
+                <input name="rangeFrequency" id="rangeFrequency" class="input" type="range" 
+                    min="1" max="60" value="5" step="1">
+                <div class="has-text-centered" style="padding-top: 25px;">
+                    <button type="button" class="button is-large is-primary" id="btnStart">Start</button>
+                    <button type="button" class="button is-large is-danger" id="btnStop">Stop</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+
+        function handleAlertClick() {
+            document.getElementById('alertWarning').style.display = 'none';
+        }
+        var slider = document.getElementById('rangeFrequency');
+        var currentFrequency = document.getElementById('currentFrequency');
+        var precision = 8;
+
+        currentFrequency.innerHTML = slider.value
+        var a = new Motion.Accelerometer({ frequency: slider.value });
+
+        // Hide warning on supoprted devices
+        window.addEventListener("devicemotion", function(event){
+            if(event.acceleration.x || event.acceleration.y || event.acceleration.y)
+                handleAlertClick();
+        });
+
+        function round(value, precision) {
+            return parseFloat(value).toFixed(precision);
+        }
+
+        a.addEventListener('reading', function(event) {
+            var { x, y, z } = event.detail.accelerationIncludingGravity;
+            document.getElementById('x').innerHTML = round(x, precision);
+            document.getElementById('y').innerHTML = round(y, precision);
+            document.getElementById('z').innerHTML = round(z, precision);
+        }, true);
+
+        document.getElementById('btnStart').addEventListener('click', function() { a.start(); });
+        document.getElementById('btnStop').addEventListener('click', function() { a.stop(); });
+
+        slider.addEventListener('change', function(e) {
+            var frequency = e.currentTarget.value;
+            currentFrequency.innerHTML = frequency;
+            a.setFrequency(frequency);
+        });
+    </script>
+  </body>
+</html>

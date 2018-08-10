@@ -4,7 +4,7 @@ const defaultOptions = {
 
 const CoreSensor = require('./CoreSensor.js');
 
-class Gyroscope extends CoreSensor {
+class Accelerometer extends CoreSensor {
     constructor(options = {}) {
         super();
         this.config = {};
@@ -15,6 +15,8 @@ class Gyroscope extends CoreSensor {
         this.running = false;
         this.internals();
     }
+
+    
 
     /**
      * This method handles the data coming from the DeviceMotionEvent
@@ -27,7 +29,10 @@ class Gyroscope extends CoreSensor {
          * frequency passed to the constructor
          */
         if (this.readyToEmit) {
-            this.dispatchEvent(new CustomEvent('reading', {detail: {rotationRate: event.rotationRate}}));
+            this.dispatchEvent(new CustomEvent('reading', {detail: {
+                acceleration: event.acceleration,
+                accelerationIncludingGravity: event.accelerationIncludingGravity
+            }}));
             this.readyToEmit = false;
         }
     };   
@@ -55,6 +60,8 @@ class Gyroscope extends CoreSensor {
         this.dispatchEvent(new Event('stopped'));
         clearInterval(this.intervalTicker);
     };
+
+    
 }
 
-module.exports = Gyroscope;
+module.exports = Accelerometer;
