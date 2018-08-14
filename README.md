@@ -30,3 +30,9 @@ gyro.start();
 setTimeout(gyro.stop(), 5000);
 ```
 
+### Supported Methods
+
+All sensors in this library support the same set of methods.
+
+  - start()
+  - stop()
