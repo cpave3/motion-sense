@@ -18,6 +18,9 @@ Setting up a new instance of motion-sense is easy. Once the file is included or 
 // Create a new instance
 var gyro = new Motion.Gyroscope({ frequency: 30 }); // Set your desired sample read-frequency
 
+// This method also would allow you to set the frequency. This can be done while the sensor is already started
+// gyro.setFrequency(30);
+
 // Set up an event listener to do something with the data once it comes through
 gyro.addEventListener('reading', function(event) {
     console.log(event.detail.rotationRate)
@@ -30,9 +33,11 @@ gyro.start();
 setTimeout(gyro.stop(), 5000);
 ```
 
-### Supported Methods
+The workflow is always the same across all sensors:
 
-All sensors in this library support the same set of methods.
+  - Instantiate the sensor and set the frequency
+  - Create event listeners to handle the data coming from the sensor
+  - Start the sensor when you want to start reading data
+  - Stop the sensor when done
 
-  - start()
-  - stop()
+
